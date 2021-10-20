@@ -1,4 +1,7 @@
+data "aws_region" "current" {}
+
 locals {
+  arn_prefix = contains(["cn-north-1", "cn-northwest-1"], data.aws_region.current.name) ? "arn:aws-cn" : "arn:aws"
   config_topics = [
     module.config_baseline_ap-northeast-1.config_sns_topic,
     module.config_baseline_ap-northeast-2.config_sns_topic,
@@ -69,7 +72,7 @@ data "aws_iam_policy_document" "recorder_publish_policy" {
 
   statement {
     actions   = ["kms:Decrypt", "kms:GenerateDataKey"]
-    resources = ["arn:aws:kms:*:${data.aws_caller_identity.current.account_id}:key/${var.config_sns_topic_kms_master_key_id != null ? var.config_sns_topic_kms_master_key_id : ""}"]
+    resources = ["${local.arn_prefix}:kms:*:${data.aws_caller_identity.current.account_id}:key/${var.config_sns_topic_kms_master_key_id != null ? var.config_sns_topic_kms_master_key_id : ""}"]
   }
 }
 
@@ -83,7 +86,7 @@ resource "aws_iam_role_policy" "recorder_publish_policy" {
 resource "aws_iam_role_policy_attachment" "recorder_read_policy" {
   count      = var.config_baseline_enabled ? 1 : 0
   role       = one(aws_iam_role.recorder[*].id)
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
+  policy_arn = "${local.arn_prefix}:iam::aws:policy/service-role/AWS_ConfigRole"
 }
 
 # --------------------------------------------------------------------------------------------------
@@ -609,7 +612,7 @@ resource "aws_iam_role_policy_attachment" "config_organization" {
   count = var.config_baseline_enabled && local.is_master_account ? 1 : 0
 
   role       = aws_iam_role.config_organization[0].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
+  policy_arn = "${local.arn_prefix}:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
 }
 
 resource "aws_config_configuration_aggregator" "organization" {

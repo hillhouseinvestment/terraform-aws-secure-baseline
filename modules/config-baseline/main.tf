@@ -1,6 +1,10 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+locals {
+  arn_prefix = contains(["cn-north-1", "cn-northwest-1"], data.aws_region.current.name) ? "arn:aws-cn" : "arn:aws"
+}
+
 # --------------------------------------------------------------------------------------------------
 # Set up AWS Config recorder and let it publish results and send notifications.
 # --------------------------------------------------------------------------------------------------
@@ -37,7 +41,7 @@ data "aws_iam_policy_document" "config-sns-policy" {
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:config:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"]
+      values   = ["${local.arn_prefix}:config:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"]
     }
   }
 }
