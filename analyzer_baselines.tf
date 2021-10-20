@@ -224,3 +224,29 @@ module "analyzer_baseline_us-west-2" {
   is_organization = local.is_master_account
   tags            = var.tags
 }
+
+module "analyzer_baseline_cn-north-1" {
+  source = "./modules/analyzer-baseline"
+
+  providers = {
+    aws = aws.cn-north-1
+  }
+
+  enabled         = local.is_analyzer_enabled && contains(var.target_regions, "cn-north-1")
+  analyzer_name   = var.analyzer_name
+  is_organization = local.is_master_account
+  tags            = var.tags
+}
+
+module "analyzer_baseline_cn-northwest-1" {
+  source = "./modules/analyzer-baseline"
+
+  providers = {
+    aws = aws.cn-northwest-1
+  }
+
+  enabled         = local.is_analyzer_enabled && contains(var.target_regions, "cn-northwest-1")
+  analyzer_name   = var.analyzer_name
+  is_organization = local.is_master_account
+  tags            = var.tags
+}

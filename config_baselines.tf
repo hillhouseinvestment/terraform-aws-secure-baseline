@@ -20,6 +20,8 @@ locals {
     module.config_baseline_us-east-2.config_sns_topic,
     module.config_baseline_us-west-1.config_sns_topic,
     module.config_baseline_us-west-2.config_sns_topic,
+    module.config_baseline_cn-north-1.config_sns_topic,
+    module.config_baseline_cn-northwest-1.config_sns_topic,
   ]
 }
 
@@ -434,6 +436,46 @@ module "config_baseline_us-west-2" {
   depends_on = [aws_s3_bucket_policy.audit_log]
 }
 
+module "config_baseline_cn-north-1" {
+  source = "./modules/config-baseline"
+
+  providers = {
+    aws = aws.cn-north-1
+  }
+
+  enabled                       = var.config_baseline_enabled && contains(var.target_regions, "cn-north-1")
+  iam_role_arn                  = one(aws_iam_role.recorder[*].arn)
+  s3_bucket_name                = local.audit_log_bucket_id
+  s3_key_prefix                 = var.config_s3_bucket_key_prefix
+  delivery_frequency            = var.config_delivery_frequency
+  sns_topic_name                = var.config_sns_topic_name
+  sns_topic_kms_master_key_id   = var.config_sns_topic_kms_master_key_id
+  include_global_resource_types = var.config_global_resources_all_regions ? true : var.region == "cn-north-1"
+  tags                          = var.tags
+
+  depends_on = [aws_s3_bucket_policy.audit_log]
+}
+
+module "config_baseline_cn-northwest-1" {
+  source = "./modules/config-baseline"
+
+  providers = {
+    aws = aws.cn-northwest-1
+  }
+
+  enabled                       = var.config_baseline_enabled && contains(var.target_regions, "cn-northwest-1")
+  iam_role_arn                  = one(aws_iam_role.recorder[*].arn)
+  s3_bucket_name                = local.audit_log_bucket_id
+  s3_key_prefix                 = var.config_s3_bucket_key_prefix
+  delivery_frequency            = var.config_delivery_frequency
+  sns_topic_name                = var.config_sns_topic_name
+  sns_topic_kms_master_key_id   = var.config_sns_topic_kms_master_key_id
+  include_global_resource_types = var.config_global_resources_all_regions ? true : var.region == "cn-northwest-1"
+  tags                          = var.tags
+
+  depends_on = [aws_s3_bucket_policy.audit_log]
+}
+
 # --------------------------------------------------------------------------------------------------
 # Global Config Rules
 # --------------------------------------------------------------------------------------------------
@@ -468,6 +510,8 @@ resource "aws_config_config_rule" "iam_mfa" {
     module.config_baseline_us-east-2,
     module.config_baseline_us-west-1,
     module.config_baseline_us-west-2,
+    module.config_baseline_cn-north-1,
+    module.config_baseline_cn-northwest-1,
   ]
 }
 
@@ -503,6 +547,8 @@ resource "aws_config_config_rule" "unused_credentials" {
     module.config_baseline_us-east-2,
     module.config_baseline_us-west-1,
     module.config_baseline_us-west-2,
+    module.config_baseline_cn-north-1,
+    module.config_baseline_cn-northwest-1,
   ]
 }
 
@@ -542,6 +588,8 @@ resource "aws_config_config_rule" "user_no_policies" {
     module.config_baseline_us-east-2,
     module.config_baseline_us-west-1,
     module.config_baseline_us-west-2,
+    module.config_baseline_cn-north-1,
+    module.config_baseline_cn-northwest-1,
   ]
 }
 
@@ -581,6 +629,8 @@ resource "aws_config_config_rule" "no_policies_with_full_admin_access" {
     module.config_baseline_us-east-2,
     module.config_baseline_us-west-1,
     module.config_baseline_us-west-2,
+    module.config_baseline_cn-north-1,
+    module.config_baseline_cn-northwest-1,
   ]
 }
 

@@ -257,3 +257,33 @@ module "securityhub_baseline_us-west-2" {
   enable_product_arns              = var.securityhub_enable_product_arns
   member_accounts                  = local.securityhub_member_accounts
 }
+
+module "securityhub_baseline_cn-north-1" {
+  source = "./modules/securityhub-baseline"
+
+  providers = {
+    aws = aws.cn-north-1
+  }
+
+  enabled                          = contains(var.target_regions, "cn-north-1") && var.securityhub_enabled
+  enable_cis_standard              = var.securityhub_enable_cis_standard
+  enable_pci_dss_standard          = var.securityhub_enable_pci_dss_standard
+  enable_aws_foundational_standard = var.securityhub_enable_aws_foundational_standard
+  enable_product_arns              = var.securityhub_enable_product_arns
+  member_accounts                  = local.securityhub_member_accounts
+}
+
+module "securityhub_baseline_cn-northwest-1" {
+  source = "./modules/securityhub-baseline"
+
+  providers = {
+    aws = aws.cn-northwest-1
+  }
+
+  enabled                          = contains(var.target_regions, "cn-northwest-1") && var.securityhub_enabled
+  enable_cis_standard              = var.securityhub_enable_cis_standard
+  enable_pci_dss_standard          = var.securityhub_enable_pci_dss_standard
+  enable_aws_foundational_standard = var.securityhub_enable_aws_foundational_standard
+  enable_product_arns              = var.securityhub_enable_product_arns
+  member_accounts                  = local.securityhub_member_accounts
+}

@@ -74,6 +74,8 @@ output "config_configuration_recorder" {
     "us-east-2"      = module.config_baseline_us-east-2.configuration_recorder
     "us-west-1"      = module.config_baseline_us-west-1.configuration_recorder
     "us-west-2"      = module.config_baseline_us-west-2.configuration_recorder
+    "cn-north-1"     = module.config_baseline_cn-north-1.configuration_recorder
+    "cn-northwest-1" = module.config_baseline_cn-northwest-1.configuration_recorder
   }
 }
 
@@ -98,6 +100,8 @@ output "config_sns_topic" {
     "us-east-2"      = module.config_baseline_us-east-2.config_sns_topic
     "us-west-1"      = module.config_baseline_us-west-1.config_sns_topic
     "us-west-2"      = module.config_baseline_us-west-2.config_sns_topic
+    "cn-north-1"     = module.config_baseline_cn-north-1.config_sns_topic
+    "cn-northwest-1" = module.config_baseline_cn-northwest-1.config_sns_topic
   }
 }
 
@@ -125,6 +129,8 @@ output "guardduty_detector" {
     "us-east-2"      = module.guardduty_baseline_us-east-2.guardduty_detector
     "us-west-1"      = module.guardduty_baseline_us-west-1.guardduty_detector
     "us-west-2"      = module.guardduty_baseline_us-west-2.guardduty_detector
+    "cn-north-1"     = module.guardduty_baseline_cn-north-1.guardduty_detector
+    "cn-northwest-1" = module.guardduty_baseline_cn-northwest-1.guardduty_detector
   }
 }
 
@@ -167,6 +173,8 @@ output "vpc_flow_logs_group" {
     "us-east-2"      = module.vpc_baseline_us-east-2.vpc_flow_logs_group
     "us-west-1"      = module.vpc_baseline_us-west-1.vpc_flow_logs_group
     "us-west-2"      = module.vpc_baseline_us-west-2.vpc_flow_logs_group
+    "cn-north-1"     = module.vpc_baseline_cn-north-1.vpc_flow_logs_group
+    "cn-northwest-1" = module.vpc_baseline_cn-northwest-1.vpc_flow_logs_group
   } : null
 }
 
@@ -191,6 +199,8 @@ output "default_vpc" {
     "us-east-2"      = module.vpc_baseline_us-east-2.default_vpc
     "us-west-1"      = module.vpc_baseline_us-west-1.default_vpc
     "us-west-2"      = module.vpc_baseline_us-west-2.default_vpc
+    "cn-north-1"     = module.vpc_baseline_cn-north-1.default_vpc
+    "cn-northwest-1" = module.vpc_baseline_cn-northwest-1.default_vpc
   }
 }
 
@@ -215,6 +225,8 @@ output "default_security_group" {
     "us-east-2"      = module.vpc_baseline_us-east-2.default_security_group
     "us-west-1"      = module.vpc_baseline_us-west-1.default_security_group
     "us-west-2"      = module.vpc_baseline_us-west-2.default_security_group
+    "cn-north-1"     = module.vpc_baseline_cn-north-1.default_security_group
+    "cn-northwest-1" = module.vpc_baseline_cn-northwest-1.default_security_group
   }
 }
 
@@ -239,6 +251,8 @@ output "default_network_acl" {
     "us-east-2"      = module.vpc_baseline_us-east-2.default_network_acl
     "us-west-1"      = module.vpc_baseline_us-west-1.default_network_acl
     "us-west-2"      = module.vpc_baseline_us-west-2.default_network_acl
+    "cn-north-1"     = module.vpc_baseline_cn-north-1.default_network_acl
+    "cn-northwest-1" = module.vpc_baseline_cn-northwest-1.default_network_acl
   }
 }
 
@@ -263,6 +277,7 @@ output "default_route_table" {
     "us-east-2"      = module.vpc_baseline_us-east-2.default_route_table
     "us-west-1"      = module.vpc_baseline_us-west-1.default_route_table
     "us-west-2"      = module.vpc_baseline_us-west-2.default_route_table
+    "cn-north-1"     = module.vpc_baseline_cn-north-1.default_route_table
+    "cn-northwest-1" = module.vpc_baseline_cn-northwest-1.default_route_table
   }
 }
-

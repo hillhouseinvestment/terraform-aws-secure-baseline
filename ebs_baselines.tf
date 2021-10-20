@@ -169,3 +169,23 @@ module "ebs_baseline_us-west-2" {
 
   enabled = contains(var.target_regions, "us-west-2")
 }
+
+module "ebs_baseline_cn-north-1" {
+  source = "./modules/ebs-baseline"
+
+  providers = {
+    aws = aws.cn-north-1
+  }
+
+  enabled = contains(var.target_regions, "cn-north-1")
+}
+
+module "ebs_baseline_cn-northwest-1" {
+  source = "./modules/ebs-baseline"
+
+  providers = {
+    aws = aws.cn-northwest-1
+  }
+
+  enabled = contains(var.target_regions, "cn-northwest-1")
+}
