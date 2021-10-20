@@ -34,19 +34,24 @@ resource "aws_iam_role" "cloudwatch_delivery" {
   tags = var.tags
 }
 
+data "aws_region" "current" {}
+locals {
+  arn_prefix = contains(["cn-north-1", "cn-northwest-1"], data.aws_region.current.name) ? "arn:aws-cn" : "arn:aws"
+}
+
 data "aws_iam_policy_document" "cloudwatch_delivery_policy" {
   count = var.cloudwatch_logs_enabled && var.enabled ? 1 : 0
 
   statement {
     sid       = "AWSCloudTrailCreateLogStream2014110"
     actions   = ["logs:CreateLogStream"]
-    resources = ["arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail_events[0].name}:log-stream:*"]
+    resources = ["${local.arn_prefix}:logs:${var.region}:${var.aws_account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail_events[0].name}:log-stream:*"]
   }
 
   statement {
     sid       = "AWSCloudTrailPutLogEvents20141101"
     actions   = ["logs:PutLogEvents"]
-    resources = ["arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail_events[0].name}:log-stream:*"]
+    resources = ["${local.arn_prefix}:logs:${var.region}:${var.aws_account_id}:log-group:${aws_cloudwatch_log_group.cloudtrail_events[0].name}:log-stream:*"]
   }
 }
 
@@ -73,7 +78,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${var.aws_account_id}:root"
+        "${local.arn_prefix}:iam::${var.aws_account_id}:root"
       ]
     }
     actions   = ["kms:*"]
@@ -91,7 +96,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:aws:cloudtrail:*:${var.aws_account_id}:trail/*"]
+      values   = ["${local.arn_prefix}:cloudtrail:*:${var.aws_account_id}:trail/*"]
     }
   }
 
@@ -124,7 +129,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:aws:cloudtrail:*:${var.aws_account_id}:trail/*"]
+      values   = ["${local.arn_prefix}:cloudtrail:*:${var.aws_account_id}:trail/*"]
     }
   }
 
@@ -167,7 +172,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:aws:cloudtrail:*:${var.aws_account_id}:trail/*"]
+      values   = ["${local.arn_prefix}:cloudtrail:*:${var.aws_account_id}:trail/*"]
     }
   }
 
