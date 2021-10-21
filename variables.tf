@@ -219,7 +219,7 @@ variable "vpc_flow_logs_destination_type" {
 
 variable "vpc_flow_logs_log_group_name" {
   description = "The name of CloudWatch Logs group to which VPC Flow Logs are delivered."
-  default     = "default-vpc-flow-logs"
+  default     = "flow-logs"
 }
 
 variable "vpc_flow_logs_retention_in_days" {
