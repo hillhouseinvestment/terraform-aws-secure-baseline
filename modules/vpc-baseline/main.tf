@@ -106,7 +106,7 @@ locals {
 
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   for_each          = local.is_cw_logs ? local.vpc_id_sets : []
-  name              = "${flow_logs_log_group_name}-${each.value}"
+  name              = "${var.flow_logs_log_group_name}-${each.value}"
   retention_in_days = var.flow_logs_retention_in_days
   tags              = var.tags
 }
