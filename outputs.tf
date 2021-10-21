@@ -152,6 +152,7 @@ output "vpc_flow_logs_iam_role" {
   value       = local.is_cw_logs ? aws_iam_role.flow_logs_publisher : null
 }
 
+/*
 output "vpc_flow_logs_group" {
   description = "The CloudWatch Logs log group which stores VPC Flow Logs in each region."
 
@@ -177,6 +178,7 @@ output "vpc_flow_logs_group" {
     "cn-northwest-1" = module.vpc_baseline_cn-northwest-1.vpc_flow_logs_group
   } : null
 }
+*/
 
 output "default_vpc" {
   description = "The default VPC."
