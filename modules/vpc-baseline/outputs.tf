@@ -17,8 +17,9 @@ output "default_route_table" {
   description = "The default route table."
   value       = var.enabled ? aws_default_route_table.default[0] : null
 }
-
+/*
 output "vpc_flow_logs_group" {
   description = "The CloudWatch Logs log group which stores VPC Flow Logs."
   value       = var.enabled && local.is_cw_logs ? aws_cloudwatch_log_group.default_vpc_flow_logs[0] : null
 }
+*/
