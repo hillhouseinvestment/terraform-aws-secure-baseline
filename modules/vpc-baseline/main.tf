@@ -6,6 +6,7 @@ locals {
 data "aws_availability_zones" "all" {
 }
 
+/* will enable for all logs
 # --------------------------------------------------------------------------------------------------
 # Enable VPC Flow Logs for the default VPC.
 # --------------------------------------------------------------------------------------------------
@@ -30,6 +31,7 @@ resource "aws_flow_log" "default_vpc_flow_logs" {
 
   tags = var.tags
 }
+*/
 
 # --------------------------------------------------------------------------------------------------
 # Clears rules associated with default resources.
@@ -94,4 +96,27 @@ resource "aws_default_security_group" "default" {
     var.tags,
     { Name = "Default Security Group" }
   )
+}
+
+# enable flow logs for all VPC
+data "aws_vpcs" "foo" {}
+locals {
+  vpc_id_sets = toset(var.enabled && var.enable_flow_logs ? tolist(data.aws_vpcs.foo.ids) : [])
+}
+
+resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+  for_each          = local.is_cw_logs ? local.vpc_id_sets : []
+  name              = "${flow_logs_log_group_name}-${each.value}"
+  retention_in_days = var.flow_logs_retention_in_days
+  tags              = var.tags
+}
+
+resource "aws_flow_log" "vpc_flow_logs" {
+  for_each             = local.vpc_id_sets
+  log_destination_type = var.flow_logs_destination_type
+  log_destination      = local.is_cw_logs ? aws_cloudwatch_log_group.vpc_flow_logs[each.key].arn : local.s3_destination_arn
+  iam_role_arn         = local.is_cw_logs ? var.flow_logs_iam_role_arn : null
+  vpc_id               = each.value
+  traffic_type         = "ALL"
+  tags                 = var.tags
 }
