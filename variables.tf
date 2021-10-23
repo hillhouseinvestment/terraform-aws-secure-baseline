@@ -508,6 +508,10 @@ variable "securityhub_enabled" {
   default     = true
 }
 
+variable "securityhub_skip_create_security_hub" {
+  default = false
+}
+
 variable "securityhub_enable_cis_standard" {
   description = "Boolean whether CIS standard is enabled."
   default     = true

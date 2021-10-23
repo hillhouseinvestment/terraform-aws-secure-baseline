@@ -7,7 +7,7 @@ locals {
 # Enable SecurityHub
 # --------------------------------------------------------------------------------------------------
 resource "aws_securityhub_account" "main" {
-  count = var.enabled ? 1 : 0
+  count = var.enabled && !var.skip_create_security_hub ? 1 : 0
 }
 
 # --------------------------------------------------------------------------------------------------

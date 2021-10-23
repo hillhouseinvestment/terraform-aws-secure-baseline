@@ -3,6 +3,11 @@ variable "enabled" {
   default     = true
 }
 
+variable "skip_create_security_hub" {
+  description = "whether skip creation of security hub since some accounts have it enabled already"
+  default     = false
+}
+
 variable "enable_cis_standard" {
   description = "Boolean whether CIS standard is enabled."
   default     = true
